@@ -3,20 +3,64 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const {
-  DB_HOST,
-  DB_USER,
-  DB_PASSWORD,
-  DB_NAME
-} = process.env;
+import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
 
-if (!DB_HOST || !DB_USER || !DB_PASSWORD || !DB_NAME) {
-  throw new Error("Missing required environment variables for DB connection.");
+type DbConfig = {
+  host: string;
+  user: string;
+  password: string;
+  database: string;
+  port?: number;
+};
+
+async function loadDbConfig(): Promise<DbConfig> {
+  const region = process.env.AWS_REGION || "ap-southeast-2";
+  const secretId =
+    process.env.RDS_SECRET_ID || "prod/rds/melbourne-parkfinder";
+
+  const client = new SecretsManagerClient({ region });
+  const resp = await client.send(
+    new GetSecretValueCommand({ SecretId: secretId })
+  );
+
+  if (!resp.SecretString) {
+    throw new Error(`"${secretId}" no SecretString`);
+  }
+
+  const secret = JSON.parse(resp.SecretString) as {
+    host: string;
+    username: string;
+    password: string;
+    dbname: string;
+    port?: number;
+  };
+
+  return {
+    host: secret.host,
+    user: secret.username,
+    password: secret.password,
+    database: secret.dbname,
+    port: secret.port ?? 3306,
+  };
 }
 
-export const db = mysql.createPool({
-  host: DB_HOST,
-  user: DB_USER,
-  password: DB_PASSWORD,
-  database: DB_NAME,
-});
+let poolPromise: Promise<mysql.Pool> | null = null;
+
+export async function getDb(): Promise<mysql.Pool> {
+  if (!poolPromise) {
+    poolPromise = (async () => {
+      const cfg = await loadDbConfig();
+      return mysql.createPool({
+        host: cfg.host,
+        user: cfg.user,
+        password: cfg.password,
+        database: cfg.database,
+        port: cfg.port ?? 3306,
+        connectionLimit: 10,
+        waitForConnections: true,
+        queueLimit: 0,
+      });
+    })();
+  }
+  return poolPromise;
+}
