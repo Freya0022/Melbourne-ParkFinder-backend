@@ -21,7 +21,7 @@ app.get("/health", (_req, res) => {
 // Test DB connection
 app.get("/api/testdb", async (req, res) => {
     try {
-        const pool = await getDB();
+        const pool = await getDb();
         const [rows] = await pool.query("SELECT 1");
         res.json({
             message: "✅ Database connected successfully!",
@@ -35,7 +35,8 @@ app.get("/api/testdb", async (req, res) => {
 });
 // Parking spots route
 app.use("/api/spot", spotRoutes);
+const PORT: number = Number(process.env.PORT) || 3000;
 app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running at http://0.0.0.0:${PORT}`);
+  console.log(`Server running at http://0.0.0.0:${PORT}`);
 });
 //# sourceMappingURL=index.js.map
