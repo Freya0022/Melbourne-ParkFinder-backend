@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "../db.js";
+import { getDb } from "../db.js";
 import type { RowDataPacket } from "mysql2";
 
 interface Spot extends RowDataPacket {
@@ -15,7 +15,8 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await db.query<Spot[]>(`
+    const pool = await getDb();
+    const [rows] = await pool.query<Spot[]>(`
       SELECT  
       ROW_NUMBER() OVER () AS id, 
       ParkingZone AS parkingZone, 
