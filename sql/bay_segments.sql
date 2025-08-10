@@ -95,3 +95,19 @@ INNER JOIN last_updated_bay lub
   ON lub.RoadSegmentID = ss.Segment_ID
 INNER JOIN parking_restrictions r
   ON r.ParkingZone = ss.ParkingZone;
+
+ALTER TABLE bay_segments ADD COLUMN Restriction_Summary varchar(120);
+
+UPDATE bay_segments
+SET Restriction_Summary = CONCAT(
+  restriction_days, ' ',
+  CASE WHEN MINUTE(time_restrict_start)=0
+       THEN LOWER(DATE_FORMAT(time_restrict_start,'%l%p'))
+       ELSE LOWER(DATE_FORMAT(time_restrict_start,'%l:%i%p')) END,
+  ' to ',
+  CASE WHEN MINUTE(time_restrict_end)=0
+       THEN LOWER(DATE_FORMAT(time_restrict_end,'%l%p'))
+       ELSE LOWER(DATE_FORMAT(time_restrict_end,'%l:%i%p')) END,
+  ' ',
+  restriction_display
+);
