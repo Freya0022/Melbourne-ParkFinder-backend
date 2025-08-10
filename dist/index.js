@@ -12,6 +12,12 @@ app.use(express.json());
 app.get("/", (req, res) => {
     res.send("🚗 Welcome to the Melbourne ParkFinder API!");
 });
+
+// Health check 
+app.get("/health", (_req, res) => {
+    res.json({ ok: true });
+});
+
 // Test DB connection
 app.get("/api/testdb", async (req, res) => {
     try {
