@@ -59,7 +59,7 @@ INNER JOIN parking_restrictions r
     ON r.ParkingZone = ss.ParkingZone;
 
 # Create the segment bay table with restrictions
-CREATE TABLE segment_bays AS
+CREATE TABLE bay_segments AS
 WITH one_bay_per_segment AS (
     SELECT pb.*
     FROM parking_bays pb
