@@ -5,7 +5,7 @@ import spotRoutes from "./routes/spot.js";
 import { getDb } from "./db.js";
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 app.use(cors({origin: "http://3.27.186.53:8080"}));
 app.use(express.json());
 // Root welcome message
@@ -35,8 +35,7 @@ app.get("/api/testdb", async (req, res) => {
 });
 // Parking spots route
 app.use("/api/spot", spotRoutes);
-const PORT: number = Number(process.env.PORT) || 3000;
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running at http://0.0.0.0:${PORT}`);
+    console.log(`Server running at http://0.0.0.0:${PORT}`);
 });
 //# sourceMappingURL=index.js.map

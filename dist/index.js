@@ -5,7 +5,7 @@ import spotRoutes from "./routes/spot.js";
 import { getDB } from "./db.js";
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 app.use(cors({origin: "http://3.27.186.53:8080"}));
 app.use(express.json());
 // Root welcome message
@@ -22,7 +22,7 @@ app.get("/health", (_req, res) => {
 app.get("/api/testdb", async (req, res) => {
     try {
         const pool = await getDB();
-        const [rows] = await db.query("SELECT 1");
+        const [rows] = await pool.query("SELECT 1");
         res.json({
             message: "✅ Database connected successfully!",
             result: rows,
