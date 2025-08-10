@@ -1,10 +1,10 @@
 {
   "name": "melbourne-parkfinder-backend",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.ts",
-    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "dev": "nodemon --exec ts-node --esm src/index.ts",
+    "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.640.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
