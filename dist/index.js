@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import spotRoutes from "./routes/spot.js";
-import { getDB } from "./db.js";
+import { getDb } from "./db.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,7 +21,7 @@ app.get("/health", (_req, res) => {
 // Test DB connection
 app.get("/api/testdb", async (req, res) => {
     try {
-        const pool = await getDB();
+        const pool = await getDb();
         const [rows] = await pool.query("SELECT 1");
         res.json({
             message: "✅ Database connected successfully!",

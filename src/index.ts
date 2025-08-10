@@ -5,7 +5,7 @@ import spotRoutes from "./routes/spot.js";
 import { getDb } from "./db.js";
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT: number = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 app.use(cors({origin: "http://3.27.186.53:8080"}));
 app.use(express.json());
 // Root welcome message
