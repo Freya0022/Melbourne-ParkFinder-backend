@@ -6,7 +6,7 @@ import { getDb } from "./db.js";
 dotenv.config();
 const app = express();
 const PORT: number = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
-app.use(cors({origin: "http://3.27.186.53:8080"}));
+app.use(cors({origin: "http://54.253.18.41:8080"}));
 app.use(express.json());
 // Root welcome message
 app.get("/", (req, res) => {
