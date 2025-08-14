@@ -43,7 +43,7 @@ app.get("/api/geocode", async (req, res) => {
 
   try {
     const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q as string)}`, {
-      headers: { "User-Agent": "Melbourne ParkFinder/1.0" }
+      headers: { "User-Agent": "Melbourne ParkFinder/1.0 (contact: cfan0042@student.monash.edu)" }
     });
 
     const data = await response.json();
