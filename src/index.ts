@@ -53,7 +53,7 @@ app.get("/api/geocode", async (req, res) => {
   if (!q) return res.status(400).json({ error: "Missing query" });
 
   try {
-    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q as string)}`, {
+    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=au&q=${encodeURIComponent(q as string)}`, {
       headers: { "User-Agent": "Melbourne ParkFinder/1.0 (contact: cfan0042@student.monash.edu)", "Accept-Language": "en-AU", "Accept": "application/json", },
       dispatcher: ipv4Agent,
     });
