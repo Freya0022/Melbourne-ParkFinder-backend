@@ -8,7 +8,10 @@ interface Spot extends RowDataPacket {
   area: string;
   location: string;
   restriction: string;
-  restric_hour: number;
+  hour: number;
+  latitude:number;
+  longitude: number;
+  restrictDisplay: string;
 }
 
 const router = Router();
@@ -23,7 +26,10 @@ router.get("/", async (req, res) => {
       OnStreet AS area, 
       RoadSegmentDescription AS location,
       Restriction_Summary AS restriction,
-      CAST(REGEXP_SUBSTR(restriction_display, '[0-9]+') AS UNSIGNED) AS hour
+      CAST(REGEXP_SUBSTR(restriction_display, '[0-9]+') AS UNSIGNED) AS hour,
+      Latitude AS latitude,
+      Longitude AS longitude,
+      Restriction_Display AS restrictDisplay
       FROM bay_segments
     `);
 
